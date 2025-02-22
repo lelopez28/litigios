@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Litigios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+    <!-- Header con fondo -->
+    <header class="py-4 text-white text-center" style="background: linear-gradient(90deg, #003087, #FFFFFF, #CE1126);">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Juego de Litigios</h1>
+            <p class="lead animate__animated animate__fadeIn mb-3" style="color: #000000;">Desarrolle sus habilidades legales resolviendo casos prácticos.</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reglasModal">Reglas del Juego</button>
+        </div>
+    </header>
+
+    <div class="container my-5">
+        <div class="row">
+            {% for caso in casos %}
+            <div class="col-md-4 mb-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {% if caso.id == 1 %}
+                            <i class="fas fa-leaf me-2 text-success"></i>
+                            {% elif caso.id == 2 %}
+                            <i class="fas fa-music me-2 text-warning"></i>
+                            {% elif caso.id == 3 %}
+                            <i class="fas fa-motorcycle me-2 text-danger"></i>
+                            {% endif %}
+                            {{ caso.titulo }}
+                        </h5>
+                        <p class="card-text">{{ caso.hechos[:100] }}...</p>
+                        <p class="card-text">
+                            {% if caso.id == 1 %}
+                            <span class="badge bg-success">Dificultad: Baja-Media (4/10)</span>
+                            {% elif caso.id == 2 %}
+                            <span class="badge bg-warning">Dificultad: Media (6/10)</span>
+                            {% elif caso.id == 3 %}
+                            <span class="badge bg-danger">Dificultad: Alta (8/10)</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Dificultad: No definida</span>
+                            {% endif %}
+                        </p>
+                        <a href="{{ url_for('caso', caso_id=caso.id) }}" class="btn btn-primary btn-lg">Resolver Caso</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal de Reglas -->
+    <div class="modal fade" id="reglasModal" tabindex="-1" aria-labelledby="reglasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reglasModalLabel">Reglas del Juego de Litigios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Objetivo</h6>
+                    <p>El objetivo es resolver casos legales ficticios presentando un alegato sólido como Fiscal o Abogado Defensor, basado en las pruebas, testigos y leyes aplicables.</p>
+
+                    <h6>Cómo Jugar</h6>
+                    <ol>
+                        <li>Seleccione un caso de la lista en la página principal.</li>
+                        <li>Revise los hechos, pruebas, testigos, ley aplicable y procedimiento proporcionados.</li>
+                        <li>Elija su función: Fiscal (acusar) o Abogado Defensor (defender).</li>
+                        <li>Formule su alegato en el campo de texto, citando leyes, utilizando pruebas o testigos y explicando su posición.</li>
+                        <li>Envíe su alegato para recibir la evaluación del juez.</li>
+                    </ol>
+
+                    <h6>Sistema de Puntuación</h6>
+                    <ul>
+                        <li><strong>+10 puntos</strong>: Citar una ley aplicable (ej. "Art. 379").</li>
+                        <li><strong>+5 puntos</strong>: Usar pruebas o testigos disponibles.</li>
+                        <li><strong>+5 puntos</strong>: Incluir una conclusión legal (ej. "Solicito una pena").</li>
+                        <li><strong>+5 puntos</strong>: Alegato coherente con la función seleccionada.</li>
+                        <li><strong>-5 puntos</strong>: Argumento incoherente o sin sustancia legal.</li>
+                    </ul>
+                    <p>El puntaje determinará el resultado:</p>
+                    <ul>
+                        <li><strong>≥20 puntos</strong>: Éxito - Alegato sólido.</li>
+                        <li><strong>10-19 puntos</strong>: Resultado neutro - Requiere mayor fundamentación.</li>
+                        <li><strong><10 puntos</strong>: Fallo - Argumento insuficiente.</li>
+                    </ul>
+
+                    <h6>Consejos</h6>
+                    <p>Lea cuidadosamente las pruebas y testigos. Asegúrese de que su alegato sea lógico, cite leyes relevantes y respete su función en el caso.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</body>
+</html>
